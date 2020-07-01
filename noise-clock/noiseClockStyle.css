@@ -1,0 +1,20 @@
+.center {
+  position: absolute;
+  display: block;
+  right: 0;
+  left: 0;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  z-index: 1;
+}
+
+.overlay {
+  z-index: 3;
+}
+
+
+.Skin  {
+    background: gray!important;
+    border: 1px solid gray!important;
+}
