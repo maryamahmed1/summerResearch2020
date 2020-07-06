@@ -2,6 +2,9 @@ Qualtrics.SurveyEngine.addOnload(function()
 {
 	/*Place your JavaScript here to run when the page loads*/
 
+	//hides blue button
+	this.hideNextButton();
+
 
 	//random number generator function
 	function getRandomInt(max) {
