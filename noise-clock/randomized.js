@@ -13,32 +13,37 @@ Qualtrics.SurveyEngine.addOnload(function()
 
 	//automatic slideshow method
 	var trial = 1;
+	var shown = [];
 	carousel();
+
 
 	function carousel() {
 	  var i;
 	  var x = document.getElementsByClassName("mySlides");
-	  var randints;
+	  var randint;
 
+	//hides all stimuli in beginning
 	  for (i = 0; i < x.length; i++) {
-		randints = getRandomInt(x.length); //gets randint [0, x.length - 1]
 		x[i].style.display = "none";
 	  }
-	  x[randints].style.display = "block";
-
-
-	
+		
+	randint = getRandomInt(x.length);//gets randint [0, x.length - 1]	
 	if (trial % 2 == 0) {
+		console.log("hide" + trial);
 		trial++;
-		x[randints].style.display = "none"
-		setTimeout(carousel, 150);
+		x[randint].style.display = "none"
+		setTimeout(carousel, 500);
 		
 	} else {
+		console.log("show img" + trial);
 		trial++;
-		setTimeout(carousel, 500);
+			if (shown.includes(randint) == false) {
+				x[randint].style.display = "block";
+				shown.push(randint);
+				console.log(randint);
+			}
+		setTimeout(carousel, 1000);
+	}	
+	
+	
 	}
-		 
-	}
-
-
-});
