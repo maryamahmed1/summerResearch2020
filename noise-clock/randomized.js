@@ -12,7 +12,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 	}
 
 	//automatic slideshow method
-	var trial = 1;
+	var trial = 0;
 	var shown = [];
 	var first = 1;
 	carousel();
@@ -28,12 +28,17 @@ Qualtrics.SurveyEngine.addOnload(function()
 	  }
 		
 	randint = getRandomInt(x.length);//gets randint [0, x.length - 1]
-	if (trial % 2 == 0) {
-		//console.log("hide" + trial);
+	if (trial == 0) {
 		trial++;
-		x[randint].style.display = "none"
+		x[randint].style.display = "none";
+		setTimeout(carousel, 1000);
+		console.log(shown);
+	} else if (trial % 2 == 0 && trial != 0) {
+		//console.log("hide" + trial);		
+		trial++;
+		x[randint].style.display = "none";
 		setTimeout(carousel, 500);
-		
+		console.log(shown);	
 	} else {
 		//console.log("show img" + trial);
 
@@ -45,12 +50,25 @@ Qualtrics.SurveyEngine.addOnload(function()
 			}
 		setTimeout(carousel, 1000);
 	}	
-		console.log(shown);		
+		//console.log(shown);		
 		Qualtrics.SurveyEngine.setEmbeddedData( 'stim-order', shown.toString());
-		
+
 		 
 	}
 	
 	
+
+});
+
+Qualtrics.SurveyEngine.addOnReady(function()
+{
+	/*Place your JavaScript here to run when the page is fully displayed*/
+
+
+});
+
+Qualtrics.SurveyEngine.addOnUnload(function()
+{
+	/*Place your JavaScript here to run when the page is unloaded*/
 
 });
