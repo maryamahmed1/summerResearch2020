@@ -14,7 +14,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 	for (var i = 0; i < x.length; i+=2) {
 		allStims.push(new Array(x[i], x[i+1]));
 	}
-	console.log(allStims);
+	//console.log(allStims);
 
 
 	//shuffling array-allStims for randomization of stimuli pairs
@@ -28,6 +28,12 @@ Qualtrics.SurveyEngine.addOnload(function()
 		return array;
 	}
 	allStims = shuffle(allStims);
+		for (var i = 0; i < allStims.length; i++) {
+		allStims[i] = shuffle(allStims[i]);
+		//add in code to record order of trial stimuli
+		// Qualtrics.SurveyEngine.setEmbeddedData( 'sub-array-order', allStims[a].toString());
+
+	}
 	Qualtrics.SurveyEngine.setEmbeddedData( 'allStims-order', allStims.toString());
 
 	//automatic slideshow method
@@ -46,6 +52,8 @@ Qualtrics.SurveyEngine.addOnload(function()
 
 	var a = 0;
 	var b = 0
+	
+	
 	carousel();
 	
 	function carousel() {
@@ -53,48 +61,58 @@ Qualtrics.SurveyEngine.addOnload(function()
 	//try shuflling array outside function move outside carousel
 	//def new vari that is actual trial number vs stage of the trial
 	//only increment trial# by 1 at last else statement. set all stim to none outside carousel
-		for (a = 0; a < allStims.length; a++) {
-			allStims[a] = shuffle(allStims[a]);
-			Qualtrics.SurveyEngine.setEmbeddedData( 'sub-array-order', allStims[a].toString());
+		text.style.display = "none";
+		if (stage == 1) {
+			stage++;
+			allStims[a][b].style.display = "none";
+			setTimeout(carousel, 1000);
+			console.log("b" + b);
+		}else if (stage == 2) {
+			console.log("stage" + stage, "b" + b);
+			stage++;
+			allStims[a][b].style.display = "block";
+			setTimeout(carousel, 1000);
+		} else if (stage == 3){
+			console.log("stage" + stage, "b" + b);
+			stage++; //set trial to 0 inc trial# by 1 using stimuli shuffle array
+			allStims[a][b].style.display = "none";
+			b++;
+			setTimeout(carousel, 500);
+		} else if (stage == 4) {
+			console.log("stage" + stage, "b" + b);
+			stage++;
+			allStims[a][b].style.display = "block";
+			setTimeout(carousel, 1000);
+		}else if (stage == 5){
+			allStims[a][b].style.display = "none";
+			text.style.display = "block";
+			trial++;
+			a++;
+			b = 0;
 			stage = 1;
-			for (b = 0; b < allStims[a].length; b++) {
-				if (stage == 1) {
-					stage++;
-					allStims[a][b].style.display = "none";
-					setTimeout(carousel, 1000);
-				} else if (stage == 2 || stage == 4) {
-					stage++;
-					allStims[a][b].style.display = "block";
-					setTimeout(carousel, 1000);
-
-				} else if (stage == 3){
-					stage++; //set trial to 0 inc trial# by 1 using stimuli shuffle array
-					allStims[a][b].style.display = "none";
-					setTimeout(carousel, 500);
-				} else if (stage == 5){
-					text.style.display = "block";
-					trial++;
-					//records key press and clicks next button
-						var qid = this.questionId;
-						document.onkeydown = function(event) {
-							console.log('keydown',event);
-							Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
-							if (event.which == 37) {
-								event.preventDefault();
-								Qualtrics.SurveyEngine.registry[qid].setChoiceValue(1, true);
-								jQuery('#NextButton').click();
-							} else if (event.which == 39) {
-								event.preventDefault();
-								Qualtrics.SurveyEngine.registry[qid].setChoiceValue(2, true);
-								jQuery('#NextButton').click();
-							}
-						}
+			
+			var qid = this.questionId;
+				document.onkeydown = function(event) {
+					console.log('keydown',event);
+					Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
+					if (event.which == 37) {
+						event.preventDefault();
+						//Qualtrics.SurveyEngine.registry[qid].setChoiceValue(1, true);
+						setTimeout(carousel);
+					} else if (event.which == 39) {
+						event.preventDefault();
+						//Qualtrics.SurveyEngine.registry[qid].setChoiceValue(2, true);
+						setTimeout(carousel);
+					}
 				}
-			}
-				
+			
+			
 		}
-		//Qualtrics.SurveyEngine.setEmbeddedData( 'stim-order', shown.toString());	 
 	}
+		
+
+	Qualtrics.SurveyEngine.setEmbeddedData( 'stim-order', shown.toString());	 
+
 	
 	
 
