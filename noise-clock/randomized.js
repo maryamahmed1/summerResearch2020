@@ -4,6 +4,28 @@ Qualtrics.SurveyEngine.addOnload(function()
 	//hides blue button
 	this.hideNextButton();
 
+	//creating image tags
+	for (var i = 1; i < 1001; ) {
+		var inv  = new Image();
+		var ori = new Image();
+		var urli = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i + "_inv.jpg"
+		var urlo = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i + "_ori.jpg"
+		if (urli.XMLHttpRequest) {
+			inv.src = url;
+			ori.src = urlo;
+		}
+	}
+
+	//adding class name to all img tags
+	var images = document.getElementsByTagName('img');
+	for (var i = 0; i < images.length; i++) {
+		if (images[i].className != "overlay center") {
+			images[i].className = "mySlides center";
+		}
+		
+	}
+
+
 	// collects the info from HTML code about the text of the question
 	// left or right click
 	var text = document.getElementById("question");
