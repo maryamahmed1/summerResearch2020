@@ -8,12 +8,21 @@ Qualtrics.SurveyEngine.addOnload(function()
 	for (var i = 1; i < 1001; ) {
 		var inv  = new Image();
 		var ori = new Image();
-		var urli = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i + "_inv.jpg"
-		var urlo = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i + "_ori.jpg"
+		var urli = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i.toString() + "_inv.jpg"
+		var urlo = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i.toString() + "_ori.jpg"
+		
+		//checking if the url exists. if so, adding it as the source of the image tag for inv and ori image
 		if (urli.XMLHttpRequest) {
-			inv.src = url;
+			inv.src = urli;
 			ori.src = urlo;
 		}
+		
+		//adding the image tag to the html file
+			document.getElementById('cont').appendChild(inv); 
+            down.innerHTML = "Image Element Added.";
+             
+            document.getElementById('cont').appendChild(ori); 
+            down.innerHTML = "Image Element Added."; 
 	}
 
 	//adding class name to all img tags
