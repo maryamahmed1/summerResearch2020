@@ -100,27 +100,42 @@ Qualtrics.SurveyEngine.addOnload(function()
 				
 				a++;
 				b = 0;
-				// stage = 1;
+				//stage = 1;
 
 				var qid = this.questionId;
 					document.onkeydown = function(event) {
-						console.log('keydown',event);
+						//console.log('keydown',event);
 						let end = new Date();
-						console.log("end " + end.getTime());
+						//console.log("end " + end.getTime());
 						time = end.getTime() - start.getTime(); //elapsed time in milliseconds
-						console.log("elapsed " + time);
-						selection.push(new Array(trial, event.which, time));
-						trial++;
-						//trial #, arrow click, time took to click
-						Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
+						//console.log("elapsed " + time);
 						if (event.which == 37 && stage == 5) {
+							console.log("stage" + stage);
 							stage = 1;
+							//trial #, arrow click, time took to click
+							selection.push(new Array(trial, event.which, time));
+							trial++;
+							Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
 							event.preventDefault();
 							setTimeout(carousel);
 						} else if (event.which == 39 && stage == 5) {
+							console.log("stage" + stage);
 							stage = 1;
+							selection.push(new Array(trial, event.which, time));
+							trial++;
+							Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
 							event.preventDefault();
 							setTimeout(carousel);
+						} else {
+							event.which = 65;
+							console.log("else stage" + stage);
+							if (stage == 3){
+								setTimeout(carousel, 500);
+							} else if (stage != 5){
+								setTimeout(carousel, 1000);
+							}
+							
+							
 						}
 					}
 
