@@ -3,37 +3,7 @@ Qualtrics.SurveyEngine.addOnload(function()
 	/*Place your JavaScript here to run when the page loads*/
 	//hides blue button
 	this.hideNextButton();
-
-	//creating image tags
-	for (var i = 1; i < 1001; ) {
-		var inv  = new Image();
-		var ori = new Image();
-		var urli = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i.toString() + "_inv.jpg"
-		var urlo = "https://raw.githubusercontent.com/thuzixuan/LocalizationClassificationImage/master/rcic_clock_1_" + i.toString() + "_ori.jpg"
-		
-		//checking if the url exists. if so, adding it as the source of the image tag for inv and ori image
-		if (urli.XMLHttpRequest) {
-			inv.src = urli;
-			ori.src = urlo;
-		}
-		
-		//adding the image tag to the html file
-			document.getElementById('cont').appendChild(inv); 
-            down.innerHTML = "Image Element Added.";
-             
-            document.getElementById('cont').appendChild(ori); 
-            down.innerHTML = "Image Element Added."; 
-	}
-
-	//adding class name to all img tags
-	var images = document.getElementsByTagName('img');
-	for (var i = 0; i < images.length; i++) {
-		if (images[i].className != "overlay center") {
-			images[i].className = "mySlides center";
-		}
-		
-	}
-
+	
 
 	// collects the info from HTML code about the text of the question
 	// left or right click
@@ -63,15 +33,14 @@ Qualtrics.SurveyEngine.addOnload(function()
 		for (var i = 0; i < allStims.length; i++) {
 		allStims[i] = shuffle(allStims[i]);
 			for (var j = 0; j < 2; j++) {
-			imgNames.push(allStims[i][j].src);
-			console.log("name" + imgNames);
+			imgNames.push(allStims[i][j].id);
+
 		}
-		//add in code to record order of trial stimuli
-		// Qualtrics.SurveyEngine.setEmbeddedData( 'sub-array-order', allStims[a].toString());
+
 
 	}
-	console.log("allStims " + allStims.toString());
-	Qualtrics.SurveyEngine.setEmbeddedData( 'allStims-order', imgNames.toString());
+
+	Qualtrics.SurveyEngine.setEmbeddedData( 'allStims2', imgNames.toString());
 
 	//automatic slideshow method
 	var trial = 1;
@@ -84,7 +53,6 @@ Qualtrics.SurveyEngine.addOnload(function()
 	for (var i = 0; i < allStims.length; i++) {
 		for (var k = 0; k < allStims[i].length; k++) {
 			allStims[i][k].style.display = "none";
-			console.log(allStims[i][k].id);
 		}
 	}
 
@@ -100,11 +68,11 @@ Qualtrics.SurveyEngine.addOnload(function()
 	function carousel() {
 
 	//try shuflling array outside function move outside carousel
-	//def new vari that is actual trial number vs stage of the trial
+	//def new variable that is actual trial number vs stage of the trial
 	//only increment trial# by 1 at last else statement. set all stim to none outside carousel
 		text.style.display = "none";
 		if (trial > allStims.length) {
-			Qualtrics.SurveyEngine.setEmbeddedData( 'selections', selection.toString());
+			Qualtrics.SurveyEngine.setEmbeddedData( 'selections2', selection.toString());
 				jQuery('#NextButton').click();
 			}
 		if (b < 2 && a < allStims.length){
@@ -112,20 +80,16 @@ Qualtrics.SurveyEngine.addOnload(function()
 			stage++;
 			allStims[a][b].style.display = "none";
 			setTimeout(carousel, 1000);
-			console.log("b" + b);
 			}else if (stage == 2) {
-				console.log("stage" + stage, "b" + b);
 				stage++;
 				allStims[a][b].style.display = "block";
 				setTimeout(carousel, 1000);
 			} else if (stage == 3){
-				console.log("stage" + stage, "b" + b);
 				stage++; //set trial to 0 inc trial# by 1 using stimuli shuffle array
 				allStims[a][b].style.display = "none";
 				b++;
 				setTimeout(carousel, 500);
 			} else if (stage == 4) {
-				console.log("stage" + stage, "b" + b);
 				stage++;
 				allStims[a][b].style.display = "block";
 				setTimeout(carousel, 1000);
@@ -133,11 +97,10 @@ Qualtrics.SurveyEngine.addOnload(function()
 				allStims[a][b].style.display = "none";
 				text.style.display = "block";
 				let start = new Date();
-				console.log("start " + start.getTime());
 				
 				a++;
 				b = 0;
-				stage = 1;
+				// stage = 1;
 
 				var qid = this.questionId;
 					document.onkeydown = function(event) {
@@ -150,13 +113,13 @@ Qualtrics.SurveyEngine.addOnload(function()
 						trial++;
 						//trial #, arrow click, time took to click
 						Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
-						if (event.which == 37) {
+						if (event.which == 37 && stage == 5) {
+							stage = 1;
 							event.preventDefault();
-							//Qualtrics.SurveyEngine.registry[qid].setChoiceValue(1, true);
 							setTimeout(carousel);
-						} else if (event.which == 39) {
+						} else if (event.which == 39 && stage == 5) {
+							stage = 1;
 							event.preventDefault();
-							//Qualtrics.SurveyEngine.registry[qid].setChoiceValue(2, true);
 							setTimeout(carousel);
 						}
 					}
@@ -168,7 +131,6 @@ Qualtrics.SurveyEngine.addOnload(function()
 	}
 		
 
-	//Qualtrics.SurveyEngine.setEmbeddedData( 'stim-order', shown.toString());	 
 
 	
 	
@@ -180,6 +142,8 @@ Qualtrics.SurveyEngine.addOnload(function()
 Qualtrics.SurveyEngine.addOnReady(function()
 {
 	/*Place your JavaScript here to run when the page is fully displayed*/
+	
+
 
 
 });
