@@ -76,28 +76,39 @@ Qualtrics.SurveyEngine.addOnload(function()
 				jQuery('#NextButton').click();
 			}
 		if (b < 2 && a < allStims.length){
-			if (stage == 1) {
-			stage++;
-			allStims[a][b].style.display = "none";
-			setTimeout(carousel, 1000);
-			}else if (stage == 2) {
-				stage++;
-				allStims[a][b].style.display = "block";
-				setTimeout(carousel, 1000);
-			} else if (stage == 3){
-				stage++; //set trial to 0 inc trial# by 1 using stimuli shuffle array
-				allStims[a][b].style.display = "none";
-				b++;
-				setTimeout(carousel, 500);
-			} else if (stage == 4) {
-				stage++;
-				allStims[a][b].style.display = "block";
-				setTimeout(carousel, 1000);
-			}else if (stage == 5){
+			const myPromise = new Promise((resolve, reject) => {
+				if (stage == 1) {
+					stage++;
+					allStims[a][b].style.display = "none";
+					//setTimeout(carousel, 1000);
+				} 
+				if (stage == 2) {
+					stage++;
+					allStims[a][b].style.display = "block";
+					//setTimeout(carousel, 1000);
+				}
+				if (stage == 3) {
+					stage++;
+					allStims[a][b].style.display = "none";
+					//setTimeout(carousel, 500);
+				} 
+				if (stage == 4) {
+					stage++;
+					allStims[a][b].style.display = "block";
+					//setTimeout(carousel, 1000);
+				} 
+			// });
+
+			
+			// myPromise.then(function() { setTimeout(carousel, 1000);}, console.log("promise1 didnt work"));
+
+			
+
+				if (stage == 5){
 				allStims[a][b].style.display = "none";
 				text.style.display = "block";
 				let start = new Date();
-				
+
 				a++;
 				b = 0;
 				//stage = 1;
@@ -138,9 +149,16 @@ Qualtrics.SurveyEngine.addOnload(function()
 							
 						}
 					}
+				
+
 
 
 			}
+
+
+		}); //closing promise func
+		myPromise.then(function() { setTimeout(carousel, 1000);}, console.log("promise1 didnt work"));
+		
 		}
 
 	}
