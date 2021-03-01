@@ -60,6 +60,14 @@ Qualtrics.SurveyEngine.addOnload(function()
 	var b = 0;
 	var selection = [];
 	var time;
+
+	function switchDisplay(currDisplay) {
+		if (currDisplay == "none") {
+			allStims[a][b].style.display = "block";
+		} else {
+			allStims[a][b].style.display = "none"
+		};
+	}
 	
 	
 	
@@ -76,99 +84,60 @@ Qualtrics.SurveyEngine.addOnload(function()
 				jQuery('#NextButton').click();
 			}
 		if (b < 2 && a < allStims.length){
-			const myPromise = new Promise((resolve, reject) => {
-				if (stage == 1) {
+			let myPromise1 = new Promise((resolve, reject) => {
 					stage++;
-					allStims[a][b].style.display = "none";
-					//setTimeout(carousel, 1000);
-				} 
-				if (stage == 2) {
+					setTimeout(() => resolve("none"), 1000);
+				});
+				myPromise1.then(function(prevDisplay) {
+					switchDisplay(prevDisplay);
 					stage++;
-					allStims[a][b].style.display = "block";
-					//setTimeout(carousel, 1000);
-				}
-				if (stage == 3) {
+					return new Promise((resolve, reject) => {
+						setTimeout(() => resolve("block"), 1000);
+					});
+				}).then(function(prevDisplay) {
 					stage++;
-					allStims[a][b].style.display = "none";
-					//setTimeout(carousel, 500);
-				} 
-				if (stage == 4) {
+					switchDisplay(prevDisplay);
+					return new Promise((resolve, reject) => {
+						setTimeout(() => resolve("none"), 500);
+					});
+				}).then(function(prevDisplay) {
+					switchDisplay(prevDisplay);
+					return new Promise((resolve, reject) => {
+						setTimeout(() => resolve("block"), 1000);
+					});
+				}).then(function(prevDisplay) {
 					stage++;
-					allStims[a][b].style.display = "block";
-					//setTimeout(carousel, 1000);
-				} 
-			// });
+					switchDisplay(prevDisplay);
+					text.style.display = "block";
+					let start = new Date();
+					a++;
+					b = 0;
+					var qid = this.questionId;
 
-			
-			// myPromise.then(function() { setTimeout(carousel, 1000);}, console.log("promise1 didnt work"));
-
-			
-
-				if (stage == 5){
-				allStims[a][b].style.display = "none";
-				text.style.display = "block";
-				let start = new Date();
-
-				a++;
-				b = 0;
-				//stage = 1;
-
-				var qid = this.questionId;
-					document.onkeydown = function(event) {
-						//console.log('keydown',event);
+					this.onkeydown = function(event) {
 						let end = new Date();
-						//console.log("end " + end.getTime());
-						time = end.getTime() - start.getTime(); //elapsed time in milliseconds
-						//console.log("elapsed " + time);
+						time = end.getTime() - start.getTime();
 						if (event.which == 37 && stage == 5) {
-							console.log("stage" + stage);
-							stage = 1;
-							//trial #, arrow click, time took to click
 							selection.push(new Array(trial, event.which, time));
 							trial++;
-							Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
+							stage = 1;
+							Qualtrics.SurveyEngine.setEmbeddedData('arrow', event.which);
 							event.preventDefault();
-							setTimeout(carousel);
+							carousel();
 						} else if (event.which == 39 && stage == 5) {
-							console.log("stage" + stage);
-							stage = 1;
 							selection.push(new Array(trial, event.which, time));
 							trial++;
-							Qualtrics.SurveyEngine.setEmbeddedData( 'arrow', event.which );
+							stage = 1;
+							Qualtrics.SurveyEngine.setEmbeddedData('arrow', event.which);
 							event.preventDefault();
-							setTimeout(carousel);
-						} else {
-							event.which = 65;
-							console.log("else stage" + stage);
-							if (stage == 3){
-								setTimeout(carousel, 500);
-							} else if (stage != 5){
-								setTimeout(carousel, 1000);
-							}
-							
-							
-						}
-					}
-				
-
-
-
-			}
-
-
-		}); //closing promise func
-		myPromise.then(function() { setTimeout(carousel, 1000);}, console.log("promise1 didnt work"));
-		
+							carousel();
+						};
+					};
+				})
 		}
+	}	
 
-	}
-		
-
-
-	
-	
-
-});
+})
 
 
 
