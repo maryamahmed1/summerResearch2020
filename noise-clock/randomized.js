@@ -31,7 +31,12 @@ Qualtrics.SurveyEngine.addOnload(function()
 	}
 	allStims = shuffle(allStims);
 		for (var i = 0; i < allStims.length; i++) {
-		allStims[i] = shuffle(allStims[i]);
+		// allStims[i] = shuffle(allStims[i]);
+		var rand = Math.round(Math.random());
+			if (rand == 1) {
+				allStims[i][0] = allStims[i][1];
+				allStims[i][1] = allStims[i][0];
+			}
 			for (var j = 0; j < 2; j++) {
 			imgNames.push(allStims[i][j].id);
 
